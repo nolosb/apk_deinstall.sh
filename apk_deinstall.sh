@@ -60,20 +60,21 @@ apk=(	com.google.android.apps.docs
 	com.miui.player
 	com.miui.hybrid
 	)
-for m in "${apk[@]}"					            #loop through the list of packages
+	
+for m in "${apk[@]}"	#loop through the list of packages
 do	
-package=$(adb shell pm path ${m}) 			  #get installation path for each package
-	if [ -z $package ]				              #if no path is found
-	then						                        #then
-		echo "Can't find package ${m}"		    #notify
-	else 						#else
-		if [[ $package == *"system"* ]]		    #if package is installed in system path
-		then					                        #then
+package=$(adb shell pm path ${m})	#get installation path for each package
+	if [ -z $package ]	#if no path is found
+	then
+		echo "Can't find package ${m}"	#then notify
+	else 						
+		if [[ $package == *"system"* ]]	#else if package is installed in system path
+		then					         
 		echo "Removing system $package:"
-		adb shell pm uninstall --user 0 ${m}	#remove it as a system app
-		else					                        #else package is installed in user path
+		adb shell pm uninstall --user 0 ${m}	#then remove it as a system app
+		else	#else package is installed in user path
 		echo "Removing user $package:"
-		adb shell pm uninstall ${m}		        #so remove it as an user app
+		adb shell pm uninstall ${m}	#so remove it as an user app
 		fi
 	fi
 done
